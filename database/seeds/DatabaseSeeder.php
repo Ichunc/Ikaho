@@ -12,9 +12,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UserSeeder::class);
-        //$this->call(StayPlansSeeder::class);
-        $this->call(HotelClassificationsSeeder::class);
-        $this->call(HotelsSeeder::class);
-
+//        $this->call(StayPlansSeeder::class);
+//        $this->call(HotelClassificationsSeeder::class);
+//        $this->call(HotelsSeeder::class);
+//        $this->call(konishiTableSeeder::class);
+          $this->call(MembersTableSeeder::class);
     }
 }
