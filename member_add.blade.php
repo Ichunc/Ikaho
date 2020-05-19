@@ -5,7 +5,7 @@
   <h2>会員登録</h2>
   <P><font color="#F00">＊は必須項目</font></p>
 
-  <form action="" method='post'>
+  <form action="" method='post' enctype='multipart/form-data'>
   @csrf
   <table>
     <tr>
