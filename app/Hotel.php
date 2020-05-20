@@ -12,13 +12,19 @@ class Hotel extends Model
 
     public $timestamps = false;
 
-    public function getAll()
+    public function get($hotel_id, $hotel_code, $prefecture)
     {
-        return $this->paginate(10);
-    }
-    public function get($hotel_id)
-    {
-        return $this->where('id', $hotel_id)->first();
+        $query = Hotel::query();
+        if(!empty($hotel_id)){
+            $query->where('id', $hotel_id);
+        }
+        if(!empty($hotel_code)){
+            $query->where('hotel_code', $hotel_code);
+        }
+        if(!empty($prefecture)){
+            $query->where('hotel_address', 'like', '%'.$prefecture.'%');
+        }
+        return $query->paginate(10);
     }
 
     public function create(array $data)
@@ -45,5 +51,10 @@ class Hotel extends Model
         $this->checkout_time = $data['checkout_time'];
         $this->update();
         return;
+    }
+
+    public function remove($hotel_id)
+    {
+        return $this->where('id', $hotel_id)->delete();
     }
 }
