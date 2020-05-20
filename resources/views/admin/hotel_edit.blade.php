@@ -1,17 +1,16 @@
 @extends('layout.admin')
 
-@section('title', '宿の管理')
+@section('title', '宿情報の編集')
 
 @section('content')
 <div class="search-form">
     <h2>宿情報の編集</h2>
-    <form action="" method='post' enctype='multipart/form-data'>
+    <form action="{{ route('hotel.edit.confirm', $data['id']) }}" method='post' enctype='multipart/form-data'>
         @csrf
-
         <table>
             <tr>
                 <th>宿名：</th>
-                <td><input type="text" name='hotel_name'></td>
+                <td><input type="text" name='hotel_name' value="{{ $data['hotel_name'] }}"></td>
             </tr>
             <tr>
                 <th>宿分類：</th>
@@ -27,7 +26,8 @@
             </tr>
             <tr>
                 <th>郵便番号：</th>
-                <td><input type="text" name='hotel_postal'><small>※ハイフンあり</small></td>
+                <td><input type="text" name='hotel_postal' value="{{ $data['hotel_postal'] }}"><small>※ハイフンあり</small>
+                </td>
             </tr>
             <tr>
                 <th rowspan='3'>住所：</th>
@@ -91,16 +91,23 @@
             </tr>
             <tr>
                 <th>電話番号：</th>
-                <td><input type="text" name='hotel_tel'><small>※ハイフンあり</small></td>
+                <td><input type="text" name='hotel_tel' value="{{ $data['hotel_tel'] }}"><small>※ハイフンあり</small></td>
+            </tr>
+            <tr>
+                <th>チェックイン時間：</th>
+                <td><input type="time" name='checkin_time' value="{{ $data['checkin_time'] }}"></td>
+            </tr>
+            <tr>
+                <th>チェックアウト時間：</th>
+                <td><input type="time" name='checkout_time' value="{{ $data['checkout_time'] }}"></td>
             </tr>
             <tr>
                 <th>宿のイメージ写真：</th>
                 <td><input type="file" name='hotel_image'></td>
             </tr>
         </table>
-        <button><a href="">戻る</a></button>
+        <button><a href="{{ route('hotel.find') }}">戻る</a></button>
         <button type='submit'>確認</button>
     </form>
-
 </div>
 @endsection
