@@ -18,12 +18,15 @@ class CreateHotelsTable extends Migration
             $table->increments('id');
             $table->string('hotel_name');
             $table->integer('hotel_code');
-            $table->string('address');
+            $table->string('hotel_postal');
+            $table->string('hotel_prefecture');
+            $table->string('hotel_city');
+            $table->string('hotel_block');
             $table->string('hotel_tel');
             $table->string('hotel_image')->nullable();
             $table->string('hotel_url')->nullable();
-            $table->time('checkin_time');
-            $table->time('checkout_time');
+            $table->time('checkin_time')->nullable();
+            $table->time('checkout_time')->nullable();
         });
     }
 
