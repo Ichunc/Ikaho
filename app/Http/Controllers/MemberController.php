@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-//use Request;
 use App\Member;
+use App\Http\Requests\SignupRequest;
 
 class MemberController extends Controller
 {
@@ -12,7 +12,7 @@ class MemberController extends Controller
         return view('member.member_add');
     }
 
-    public function confirminfo(Request $request) {
+    public function confirminfo(SignupRequest $request) {
         $data = $request->all();
         return view('member.member_add_confirm', compact('data'));
     }
