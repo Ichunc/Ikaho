@@ -2,22 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\HotelRequest;
 use Illuminate\Http\Request;
 use App\Hotel;
 
 class HotelController extends Controller
 {
-    public function find() 
+    public function find(Request $request) 
     {
+        $hotel_id = $request->hotel_id;
+        $hotel_code = $request->hotel_code;
+        $prefecture = $request->prefectures;
+        
         $hotel = new Hotel;
-        $list = $hotel->getAll();
+        $list = $hotel->get($hotel_id, $hotel_code, $prefecture);
         return view('admin.hotel_search', compact('list'));
     }
+
+        public function findMember(Request $request) 
+    {
+        $hotel_id = $request->hotel_id;
+        $hotel_code = $request->hotel_code;
+        $prefecture = $request->prefectures;
+        
+        $hotel = new Hotel;
+        $list = $hotel->get($hotel_id, $hotel_code, $prefecture);
+        return view('member.hotel_search', compact('list'));
+    }
+
     public function addHotel() 
     {
         return view('admin.hotel_add');
     }
-    public function confirmAddHotel(Request $request) 
+    public function confirmAddHotel(HotelRequest $request) 
     {
         $data = $request->all();
         return view('admin.hotel_add_confirm', compact('data'));
@@ -27,7 +44,7 @@ class HotelController extends Controller
         $data = $request->all();
         $hotel = new Hotel;
         $hotel->create((array) $data);
-        return redirect('/add_hotel');
+        return redirect('/find_hotel');
     }
     public function editHotel($hotel_id) 
     {
@@ -49,14 +66,17 @@ class HotelController extends Controller
         return redirect('/find_hotel');
     }
 
-    public function deleteHotel() 
+    public function deleteHotel($hotel_id) 
     {
-        return view('admin.hotel_delete');
+        $data = Hotel::find($hotel_id);
+        return view('admin.hotel_delete', compact('data'));
     }
 
-    public function removeHotel() 
+    public function removeHotel(Request $request) 
     {
-        return view('');
+        $hotel = new Hotel;
+        $hotel->remove($request->id);
+        return redirect('/find_hotel');
     }
 
 }
