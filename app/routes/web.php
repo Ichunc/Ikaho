@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/member', 'MemberController@index')->name('member.index');
+Route::post('/member', 'HotelController@findMember')->name('member.hotel.find');
+
+Route::get('/member/find_hotel', 'HotelController@findMember')->name('member.hotel.find');
+Route::post('/member/find_hotel', 'HotelController@findMember')->name('member.hotel.find');
