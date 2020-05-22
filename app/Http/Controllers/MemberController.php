@@ -17,7 +17,7 @@ class MemberController extends Controller
         return view('member.member_add_confirm', compact('data'));
     }
 
-    public function createMember(Request $request) {
+    public function createAccount(Request $request) {
         $Member = new Member;
         $form = $request->all();
         unset($form['_token']);
