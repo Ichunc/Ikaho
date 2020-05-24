@@ -15,15 +15,17 @@ class CreateStayPlansTable extends Migration
     {
         Schema::create('stay_plans', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('hotel_id');
+            $table->integer('hotel_id')->unsigned();
             $table->string('plan_name');
             $table->string('description');
             $table->integer('price');
             $table->integer('room_amount');
             $table->boolean('deleted');
-            $table->date('deleted_date');
+            $table->date('deleted_date')->nullable();
             $table->string('note');
             $table->timestamps();
+
+            $table->foreign('hotel_id')->references('id')->on('hotels');
         });
     }
 
