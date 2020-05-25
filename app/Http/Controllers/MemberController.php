@@ -4,10 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 //use Request;
-use App\Member;
+use App\User;
+use App\Admin;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class MemberController extends Controller
 {
+
+
+    public function guest_index(){
+      return view('guest.guest');
+    }
+
+    public function guest_login(){
+      return view('guest.login');
+    }
+
+    public function login(Request $request){
+      $username = $request->username;
+      $password = $request->password;
+      if (Auth::attempt(['username' => $username,
+                         'password' => $password])){
+            return redirect('member');
+      } else {
+            return view('guest.login');
+      }
+
+    }
+
     public function signup() {
         return view('member.member_add');
     }
@@ -18,20 +43,22 @@ class MemberController extends Controller
     }
 
     public function createAccount(Request $request) {
-        $Member = new Member;
+        $User = new User;
         $form = $request->all();
         unset($form['_token']);
 
+        //nameを一応作成
+        $User->name = $request->family_name . $request->first_name;
         //住所つなげる
-        $Member->address = $request->prefectures . $request->city . $request->block;
-
+        $User->address = $request->prefectures . $request->city . $request->block;
         //日付をｰで区切る
         $birthday = $request->year . '-' . $request->month . '-' . $request->day;
         //日付のフォーマットを変更する（月と日の前に0をつける）
         $dateformat = new \DateTime($birthday);
-        $Member->birthday = $dateformat->format('Y-m-d');
-
-        $Member->fill($form)->save();
+        $User->birthday = $dateformat->format('Y-m-d');
+        //パスワードをハッシュ化する
+        $User->password = Hash::make($request->password);
+        $User->fill($form)->save();
         /*
           $Member->username         = $request->username;
           $Member->family_name      = $request->family_name;
@@ -46,7 +73,53 @@ class MemberController extends Controller
           $Member->password         = $request->password;
         */
         //$birthday = $_POST["year"] . '-' .  $_POST["month"] . '-' . $_POST["day"];
-        return redirect('/member/index');
+        return redirect('/guest/login');
     }
+    public function member_index(){
+      return view('member.index');
+    }
+
+
+
+
+
+
+/*
+    //admin
+    public function admin_login(Request $request){
+      $admin_name = $request->admin_name;
+      $password = $request->password;
+      if (Auth::attempt(['admin_name' => $admin_name,
+                         'password' => $password])){
+            return redirect('admin');
+      } else {
+            return view('admin.login');
+      }
+    }
+
+    public function admin_login_view(){
+      return view('admin.login');
+    }
+
+    public function admin_signup(){
+      return view('admin.admin_add');
+    }
+    public function admin_confirmInfo(Request $request) {
+        $data = $request->all();
+        return view('admin.admin_add_confirm', compact('data'));
+    }
+
+    public function admin_createAccount(Request $request) {
+        $Admin = new Admin;
+        $form = $request->all();
+        unset($form['_token']);
+        $Admin->password = Hash::make($request->password);
+        $Admin->fill($form)->save();
+        return redirect('/admin/login');
+    }
+*/
+
+
+
 
 }

@@ -4,11 +4,11 @@
 @section('content')
 
 <h2>ログイン</h2>
-<form action="" method='post'>
+<form action="login" method='post'>
 @csrf
   <table>
     <tr>
-      <td>ID：</td><td><input type="number" name='member_id'></td>
+      <td>ユーザー名：</td><td><input type="text" name='username'></td>
     </tr>
     <tr>
       <td>パスワード：</td><td><input type="password" name='password'></td>
