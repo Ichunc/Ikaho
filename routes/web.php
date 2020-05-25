@@ -12,11 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function(){
+    return view('layout.sample');
 });
-
 //guest
 Route::get('/guest', 'MemberController@guest_index')->name('guest.index');
 Route::post('/guest/find_hotel', 'HotelController@findHotel_guest')->name('guest.hotel.find');

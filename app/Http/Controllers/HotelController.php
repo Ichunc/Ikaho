@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\HotelRequest;
 use Illuminate\Http\Request;
+use App\Member;
 use App\Hotel;
+use App\StayPlan;
+use App\Reservation;
 
 class HotelController extends Controller
 {
-    public function find(Request $request) 
+    public function findHotel_admin(Request $request) 
     {
         $hotel_id = $request->hotel_id;
         $hotel_code = $request->hotel_code;
@@ -19,7 +22,7 @@ class HotelController extends Controller
         return view('admin.hotel_search', compact('list'));
     }
 
-        public function findMember(Request $request) 
+    public function findHotel_member(Request $request) 
     {
         $hotel_id = $request->hotel_id;
         $hotel_code = $request->hotel_code;
@@ -79,4 +82,24 @@ class HotelController extends Controller
         return redirect('/find_hotel');
     }
 
+    public function addReservation($plan_id)
+    {
+        $data = StayPlan::find($plan_id);
+        return view('member.hotel_reserve', compact('data'));
+    }
+    public function confirmAddReservation(Request $request, $plan_id)
+    {
+        $plan = StayPlan::find($plan_id);
+        $member = Member::find(1);
+        $data = $request->all();
+        return view('member.hotel_reserve_confirm', compact('data', 'plan', 'member'));
+    }
+
+    public function createReservation(Request $request, $plan_id)
+    {
+        $data = $request->all();
+        $reservation = new Reservation;
+        $reservation->create((array) $data, $plan_id);
+        return redirect('member/find_hotel');
+    }
 }

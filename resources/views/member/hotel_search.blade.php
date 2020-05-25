@@ -1,6 +1,6 @@
 @extends('layout.member')
 
-@section('title', '条件から宿を探す')
+@section('title', '予約情報確認')
 
 @section('content')
 <div class="card">
@@ -157,5 +157,42 @@
 @endforeach
 
 @endif
+=======
+        <h5>予約内容の確認</h5>
+        <form action="{{route('reservation.create', $plan->id )}}" method='post'>
+            @csrf
+            <input type="hidden" name='room_amount' value="{{ $data['room_amount'] }}">
+            <input type="hidden" name='checkin_date' value="{{ $data['checkin_date'] }}">
+            <input type="hidden" name='checkout_date' value="{{ $data['checkout_date'] }}">
+            <input type="hidden" name='reserve_date' value="<?= date('Y-m-d') ?>">
+            <table class="table">
+                <tr>
+                    <th>宿泊プラン：</th>
+                    <td>{{ $plan->plan_name }}</td>
+                </tr>
+                <tr>
+                    <th>料金：</th>
+                    <!-- 一泊金額×日数×部屋数 -->
+                    <td>¥{{ number_format($plan->price * $interval_format * $data['room_amount']) }}</td>
+                </tr>
+                <tr>
+                    <th>予約部屋数：</th>
+                    <td>{{ $data['room_amount'] }}</td>
+                </tr>
+                <tr>
+                    <th>チェックイン日：</th>
+                    <td>{{ $data['checkin_date'] }}</td>
+                </tr>
+                <tr>
+                    <th>チェックアウト日：</th>
+                    <td>{{ $data['checkout_date'] }}</td>
+                </tr>
+            </table>
+            <button class="btn"><a href="{{ route('reservation.add', $plan->id) }}">戻る</a></button>
+            <button class="btn btn-primary" type='submit'>予約確定</button>
+        </form>
+    </div>
+</div>
+<br>
 
 @endsection
