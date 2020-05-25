@@ -3,11 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Member;
+use App\User;
 use App\Http\Requests\SignupRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class MemberController extends Controller
 {
+
+  public function login(){
+    return view('guest.login');
+  }
+
+  public function postlogin(Request $request){
+    $username = $request->username;
+    $password = $request->password;
+    if (Auth::attempt(['username' => $username,
+                       'password' => $password])){
+          return redirect('member');
+    } else {
+          return view('guest.login');
+    }
+
+  }
+
+
+
     public function signup() {
         return view('member.member_add');
     }
@@ -18,20 +39,23 @@ class MemberController extends Controller
     }
 
     public function createAccount(Request $request) {
-        $Member = new Member;
+        $Users = new User;
         $form = $request->all();
         unset($form['_token']);
 
         //住所つなげる
-        $Member->address = $request->prefectures . $request->city . $request->block;
+        $Users->address = $request->prefectures . $request->city . $request->block;
 
+        //nameつける
+        $Users->name = $request->family_name . $request->first_name;
         //日付をｰで区切る
+
         $birthday = $request->year . '-' . $request->month . '-' . $request->day;
         //日付のフォーマットを変更する（月と日の前に0をつける）
         $dateformat = new \DateTime($birthday);
-        $Member->birthday = $dateformat->format('Y-m-d');
-
-        $Member->fill($form)->save();
+        $Users->birthday = $dateformat->format('Y-m-d');
+        $Users->password = Hash::make($request->password);
+        $Users->fill($form)->save();
         /*
           $Member->username         = $request->username;
           $Member->family_name      = $request->family_name;
@@ -43,8 +67,9 @@ class MemberController extends Controller
           $Member->tel              = $request->tel;
           $Member->email            = $request->email;
           $Member->birthday         = $request->birthday;
-          $Member->password         = $request->password;
+          $Member->password         = Hash::make($request->password);
         */
+
         //$birthday = $_POST["year"] . '-' .  $_POST["month"] . '-' . $_POST["day"];
         return redirect('/member/index');
     }
