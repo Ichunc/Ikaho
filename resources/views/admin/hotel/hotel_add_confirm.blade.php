@@ -38,7 +38,12 @@
             <input type="hidden" name='hotel_image' value="">
             <tr>
                 <th>宿のイメージ写真：</th>
-                <td></td>
+                <td>@if(isset($file_name))
+                    <img src="{{ asset('storage/img/' . $file_name) }}">
+                    @else
+                    写真なし
+                    @endif
+                </td>
             </tr>
         </table>
         <form action="{{ route('hotel.create') }}" method='post' enctype='multipart/form-data'>
@@ -50,6 +55,9 @@
             <input type="hidden" name='hotel_city' value="{{ $data['hotel_city']}}">
             <input type="hidden" name='hotel_block' value="{{ $data['hotel_block']}}">
             <input type="hidden" name='hotel_tel' value="{{ $data['hotel_tel']}}">
+            @if(isset($file_name))
+            <input type="hidden" name='hotel_image' value="{{ $file_name}}">
+            @endif
             <input type="hidden" name='checkin_time' value="{{ $data['checkin_time']}}">
             <input type="hidden" name='checkout_time' value="{{ $data['checkout_time']}}">
             <button class="btn"><a href="{{ route('hotel.add') }}">戻る</a></button>

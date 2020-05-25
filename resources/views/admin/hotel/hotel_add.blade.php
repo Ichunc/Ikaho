@@ -1,19 +1,17 @@
 @extends('layout.admin')
 
-@section('title', '宿情報の編集')
+@section('title', '宿情報の新規登録')
 
 @section('content')
-
 <div class="card">
     <div class="card-body m-3">
-
-        <h5>宿情報の編集</h5>
-        <form action="{{ route('hotel.edit.confirm', $data['id']) }}" method='post' enctype='multipart/form-data'>
+        <h2>宿情報の新規登録</h2>
+        <p>*は必須項目</p>
+        <form action="{{ route('hotel.add.confirm') }}" method='post' enctype='multipart/form-data'>
             @csrf
             <div class="form-group col-6">
                 <label for="hotel_name">*宿名</label>
-                <input name="hotel_name" type="text" class="form-control @error('hotel_name') is-invalid @enderror"
-                    value="{{ $data['hotel_name'] }}">
+                <input name="hotel_name" type="text" class="form-control @error('hotel_name') is-invalid @enderror">
                 @error('hotel_name')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -22,20 +20,25 @@
 
             </div>
             <div class="form-group col-6">
-                {!! Form::label('hotel_code', '*宿分類') !!}
-                {{Form::select('hotel_code', [
-                        '1' => 'シティホテル',
-                        '2' => 'リゾートホテル',
-                        '3' => 'ビジネスホテル',
-                        '4' => '旅館',
-                        '5' => '民宿',
-                        '6' => 'ペンション']
-                        , $data['hotel_code'])}}
+                <label for="hotel_code">*宿分類</label>
+                <select name="hotel_code" value="{{ old('hotel_code') }}"
+                    class="form-control @error('hotel_code') is-invalid @enderror">
+                    <option value="0" selected>選択してください</option>
+                    <option value="1">1.シティホテル</option>
+                    <option value="2">2.リゾートホテル</option>
+                    <option value="3">3.ビジネスホテル</option>
+                    <option value="4">4.旅館</option>
+                    <option value="5">5.民宿</option>
+                    <option value="6">6.ペンション</option>
+                </select>
+                @error('hotel_code')
+                <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="form-group col-6">
                 <label for="hotel_postal">*郵便番号</label>
                 <input type="text" class="form-control @error('hotel_postal') is-invalid @enderror" name="hotel_postal"
-                    describedby="help_postal" value="{{ $data['hotel_postal'] }}">
+                    describedby="help_postal">
                 <small id="help_postal" class="text-muted">ハイフンあり</small>
                 @error('hotel_postal')
                 <div class="invalid-feedback">{{$message}}</div>
@@ -43,7 +46,7 @@
             </div>
             <div class="form-group col-6">
                 <label for="hotel_prefecture">*住所</label>
-                <select class="form-control" name="hotel_prefecture" value="{{ $data['hotel_prefecture'] }}">
+                <select class="form-control" name="hotel_prefecture" value="{{ old('hotel_prefecture') }}">
                     <option value="" selected>選択してください</option>
                     <option value="北海道">北海道</option>
                     <option value="青森県">青森県</option>
@@ -99,13 +102,13 @@
                 @enderror
                 <br>
                 <input name="hotel_city" type="text" class="form-control @error('hotel_city') is-invalid @enderror"
-                    placeholder="市区町村名" value="{{ $data['hotel_city'] }}">
+                    placeholder="市区町村名">
                 @error('hotel_city')
                 <div class="invalid-feedback">{{$message}}</div>
                 @enderror
                 <br>
                 <input name="hotel_block" type="text" class="form-control @error('hotel_block') is-invalid @enderror"
-                    placeholder="番地・ビル名" value="{{ $data['hotel_block'] }}">
+                    placeholder="番地・ビル名">
                 @error('hotel_block')
                 <div class="invalid-feedback">{{$message}}</div>
                 @enderror
@@ -113,7 +116,7 @@
             <div class="form-group col-6">
                 <label for="hotel_tel">*電話番号</label>
                 <input type="text" class="form-control @error('hotel_tel') is-invalid @enderror" name="hotel_tel"
-                    describedby="help_hotel_tel" value="{{ $data['hotel_tel'] }}">
+                    describedby="help_hotel_tel">
                 <small id="help_hotel_tel" class="text-muted">ハイフンあり</small>
                 @error('hotel_tel')
                 <div class="invalid-feedback">{{$message}}</div>
@@ -122,11 +125,17 @@
             <div class="form-group row">
                 <div class="col-4">
                     <label for="checkin_time">チェックイン時間</label>
-                    <input type="time" class="form-control" name="checkin_time" value="{{ $data['checkin_time'] }}">
+                    <input type="time" class="form-control" name="checkin_time">
                 </div>
                 <div class="col-4">
                     <label for="checkout_time">チェックアウト時間</label>
-                    <input type="time" class="form-control" name="checkout_time" value="{{ $data['checkout_time'] }}">
+                    <input type="time" class="form-control" name="checkout_time">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    <label for="hotel_image">宿のイメージ写真</label>
+                    <input type="file" class="form-control" name="hotel_image">
                 </div>
             </div>
             <button class="btn"><a href="{{ route('hotel.find') }}">戻る</a></button>
