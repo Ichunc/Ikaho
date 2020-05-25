@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function(){
+Route::get('/', function () {
     return view('layout.sample');
 });
 //guest
@@ -24,19 +24,21 @@ Route::get('/guest/register', 'MemberController@signup')->name('guest.register')
 Route::post('/guest/register_confirm', 'MemberController@confirmInfo')->name('guest.register.confirm');
 Route::post('/guest/register_complete', 'MemberController@createAccount')->name('guest.register.complete');
 
-Route::get('/guest/login', 'MemberController@index')->name('guest.login');
+Route::get('/guest/login', 'MemberController@login')->name('guest.login');
+Route::post('/guest/login', 'MemberController@postLogin')->name('guest.login.complete');
 
 //member
 Route::get('/member', 'MemberController@index')->name('member.index');
+
 Route::get('/member/find_hotel', 'HotelController@findHotel_member')->name('member.hotel.find');
 Route::post('/member/find_hotel', 'HotelController@findHotel_member')->name('member.hotel.find');
 
-Route::get('/member/edit', 'MemberController@index')->name('member.edit');
-Route::post('/member/edit_confirm', 'MemberController@index')->name('member.edit.confirm');
+Route::get('/member/edit', 'MemberController@editMember')->name('member.edit');
+Route::post('/member/edit_confirm', 'MemberController@confirmEditMember')->name('member.edit.confirm');
 Route::post('/member/edit_complete', 'MemberController@index')->name('member.update');
 
-Route::get('/member/delete', 'MemberController@index')->name('member.delete');
-Route::post('/member/delete', 'MemberController@index')->name('member.remove');
+Route::get('/member/delete', 'MemberController@deleteMember')->name('member.delete');
+Route::post('/member/delete', 'MemberController@removeMember')->name('member.remove');
 
 Route::get('/member/add_reservation/{id}', 'HotelController@addReservation')->name('reservation.add');
 Route::post('/member/add_reservation_confirm/{id}', 'HotelController@confirmAddReservation')->name('reservation.add.confirm');
@@ -56,3 +58,13 @@ Route::post('/edit_hotel_complete/{id}', 'HotelController@updateHotel')->name('h
 
 Route::get('/delete_hotel/{id}', 'HotelController@deleteHotel')->name('hotel.delete');
 Route::post('/delete_hotel/{id}', 'HotelController@removeHotel')->name('hotel.remove');
+
+Route::get('/admin/find_member', 'MemberController@getMember')->name('admin.member.find');
+Route::post('/admin/find_member', 'MemberController@getMember')->name('admin.member.find');
+
+Route::get('/admin/edit_member/{id}', 'MemberController@editMember_admin')->name('admin.member.edit');
+Route::post('/admin/edit_member/{id}', 'MemberController@confirmEditMember_admin')->name('admin.member.edit.confirm');
+Route::post('/admin/edit_member/confirm/{id}', 'MemberController@updateMember_admin')->name('admin.member.edit.complete');
+
+Route::get('/admin/delete_member/{id}', 'MemberController@deleteMember_admin')->name('admin.member.delete');
+Route::post('/admin/delete_member/{id}', 'MemberController@removeMember_admin')->name('admin.member.remove');
