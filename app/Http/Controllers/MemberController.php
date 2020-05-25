@@ -118,6 +118,62 @@ class MemberController extends Controller
         return redirect('/admin/login');
     }
 */
+    public function editMember(Request $request)
+    {
+        $data = User::find(2);
+        $birthday = explode('-', $data->birthday);
+        return view('member.info.member_edit', compact('data', 'birthday'));
+    }
+
+    public function confirmEditMember(EditMemberInfoRequest $request)
+    {
+        $data = $request->all();
+        return view('member.info.member_edit_confirm', compact('data'));
+    }
+
+    public function updateMember(Request $request)
+    {
+        $data = $request->all();
+        $member = User::find($request->id);
+        $member->edit($data);
+        unset($form['_token_']);
+        $member->fill($form)->save();
+        session()->flash('update_member');
+        return redirect('/show_member');
+    }
+
+    public function deleteMember()
+    {
+        return view('member.info.member_delete');
+    }
+    public function removeMember()
+    {
+        return redirect('');
+    }
+
+    public function getMember(Request $request)
+    {
+        $member_id = $request->member_id;
+        $sex = $request->sex;
+        $prefecture = $request->prefecture;
+        
+        $user = new User;
+        $list = $user->get($member_id, $sex, $prefecture);
+        return view('admin.member_search', compact('list'));
+    }
+
+    public function deleteMember_admin(Request $request)
+    {
+        $data = User::find(3);
+        return view('admin.member.member_delete', compact('data'));
+    }
+    public function removeMember_admin(Request $request)
+    {
+        $member = new User;
+        $member->remove($request->id);
+        session()->flash('delete_admin');
+        return redirect('admin/find_member');
+    }
 
 
 
