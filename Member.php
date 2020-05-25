@@ -11,8 +11,29 @@ class Member etends Model
     'id', 'username', 'family_name', 'family_name_kana', 'first_name', 'first_name_kana', 'sex', 'postal', 'address', 'tel', 'email', 'birthday', 'password'
   ];
 
+  public function get($id, $family_name, $first_name)
+  {
+    //会員の検索
+    $member = Member::with('Members')
+    ->when($id, function($query, $id) {
+      return $query->where('id', $id);
+    })
+
+    ->when($family_name, function($query, $family_name) {
+      return $query->where('family_name', $family_name);
+    })
+
+    ->when($first_name, function($query, $first_name) {
+      return $qury->where('first_name', $first_name);
+    })
+
+    ->paginate(10);
+    return $member;
+  }
+
   public function edit(array $data)
   {
+    //会員の更新
     $this->username = $data['username'];
     $this->family_name = $data['family_name'];
     $this->family_name_kana = $data['family_name_kana'];
@@ -31,6 +52,7 @@ class Member etends Model
 
   public function remove($id)
   {
+    //会員の退会
     return $this->where('id' $$id)->delete();
   }
 }
