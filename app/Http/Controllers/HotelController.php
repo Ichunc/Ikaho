@@ -141,4 +141,76 @@ class HotelController extends Controller
         session()->flash('reserve');
         return redirect('member/find_hotel');
     }
+
+    // 宿泊プラン処理メゾット
+    public function findStayPlan(Request $request)
+    {
+        $plan = new StayPlan;
+        $plan_name = $request->plan_name;
+        $price_min = $request->price_min;
+        $price_max = $request->price_max;
+        $room_min = $request->room_min;
+        $room_max = $request->room_max;
+
+        $list = $plan->get($plan_name, $price_min, $price_max, $room_min, $room_max);
+        return view('admin.plan.plan_search', compact('list'));
+    }
+
+    public function addStayPlan(Request $request)
+    {
+        $hotel = new Hotel;
+        $list = $hotel->all();
+        return view('admin.plan.plan_add', compact('list'));
+    }
+
+    public function confirmAddStayPlan(Request $request)
+    {
+        $data = $request->all();
+        return view('admin.plan.plan_add_confirm', compact('data'));
+    }
+
+    public function createStayPlan(Request $request)
+    {
+        $data = $request->all();
+        $plan = new StayPlan;
+        $plan->create((array)$data);
+        session()->flash('create_plan');
+        return redirect('/find_plan');
+    }
+
+    public function editStayPlan(Request $request, $plan_id)
+    {
+        $data = StayPlan::find($plan_id);
+        return view('admin.plan.plan_edit', compact('data'));
+    }
+
+    public function confirmEditStayPlan(Request $request, $plan_id)
+    {
+        $data = $request->all();
+        return view('admin.plan.plan_edit_confirm', compact('data', 'plan_id'));
+    }
+
+    public function updateStayPlan(Request $request)
+    {
+        $data = $request->all();
+        $plan = StayPlan::find($request->id);
+        $plan->edit($data);
+        session()->flash('update_plan');
+
+        return redirect('/find_plan');
+    }
+
+    public function deleteStayPlan(Request $request, $plan_id)
+    {
+        $data = StayPlan::find($plan_id);
+        return view('admin.plan.plan_delete', compact('data', 'plan_id'));
+    }
+
+    public function removeStayPlan(Request $request, $plan_id)
+    {
+        $plan = StayPlan::find($plan_id);
+        $plan->remove();
+        session()->flash('remove_plan');
+        return redirect('/find_plan');
+    }
 }
