@@ -10,7 +10,7 @@
         <table class="table">
             <tr>
                 <th>ユーザーネーム：</th>
-                <td>{{ $data['family_name'] }}　{{ $data['first_name'] }}</td>
+                <td>{{ $data['username'] }}</td>
             </tr>
             <tr>
                 <th>氏名：</th>
@@ -61,8 +61,11 @@
             <input type="hidden" name='year' value="{{ $data['year'] }}">
             <input type="hidden" name='month' value="{{ $data['month'] }}">
             <input type="hidden" name='day' value="{{ $data['month'] }}">
+            <input type="hidden" name='role' value=5>
             <input type="hidden" name='password' value="{{ $data['password'] }}">
-            <button class="btn"><a href="{{route('guest.register')}}"></a> 戻る</a></button>
+
+
+<button class="btn"><a href="{{route('guest.register')}}"></a> 戻る</a></button>
             <button class="btn btn-primary" type='submit'>登録</button>
         </form>
     </div>
