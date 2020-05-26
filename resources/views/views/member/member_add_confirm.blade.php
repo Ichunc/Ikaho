@@ -68,6 +68,8 @@
       </tr>
       <input type="hidden" name='password' value="{{ $data['password'] }}">
 
+      <input type="hidden" name='role' value=5>
+
     </table>
       <button type="button" onclick="history.back()">戻る</button>
       <button type='submit'>登録</button>

@@ -1,15 +1,15 @@
 @extends('layout.guest')
 
-@section('title', '会員登録')
+@section('title', '管理者登録')
 
 @section('content')
 <div class="card">
     <div class="card-body m-3">
-        <h5>会員登録確認</h5>
+        <h5>管理者登録確認</h5>
         @csrf
         <table class="table">
             <tr>
-                <th>ユーザーネーム：</th>
+                <th>管理者ID：</th>
                 <td>{{ $data['username'] }}</td>
             </tr>
             <tr>
@@ -46,6 +46,7 @@
             </tr>
         </table>
         <form action="createMember" method='post'>
+          @csrf
             <input type='hidden' name='username' value="{{ $data['username'] }}">
             <input type='hidden' name='family_name' value="{{ $data['family_name'] }}">
             <input type='hidden' name='first_name' value="{{ $data['first_name'] }}">
@@ -61,11 +62,9 @@
             <input type="hidden" name='year' value="{{ $data['year'] }}">
             <input type="hidden" name='month' value="{{ $data['month'] }}">
             <input type="hidden" name='day' value="{{ $data['month'] }}">
-            <input type="hidden" name='role' value=5>
             <input type="hidden" name='password' value="{{ $data['password'] }}">
-
-
-<button class="btn"><a href="{{route('guest.register')}}"></a> 戻る</a></button>
+            <input type="hidden" name='role' value=1>
+            <button class="btn"><a href="{{route('guest.register')}}"></a> 戻る</a></button>
             <button class="btn btn-primary" type='submit'>登録</button>
         </form>
     </div>
