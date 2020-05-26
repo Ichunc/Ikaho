@@ -4,8 +4,8 @@
 @endsection
 @section('side-menu')
 <ul>
-    <li><a href="">会員検索</a></li>
+    <li><a href="{{ route('admin.member.find') }}">会員検索</a></li>
     <li><a href="{{ route('hotel.find')}}">宿検索</a></li>
-    <li><a href="">宿泊プラン検索</a></li>
+    <li><a href="{{ route('plan.find')}}">宿泊プラン検索</a></li>
 </ul>
 @endsection
